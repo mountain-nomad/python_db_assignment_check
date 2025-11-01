@@ -73,7 +73,6 @@ for task in tasks_to_run:
             assert_frame_equal(df_txt, df_sql, check_dtype=False, check_like=False)
             print("Полное совпадение: и порядок, и значения.")
         except AssertionError as e:
-            print("Таблицы различаются (учитывая порядок).")
             neq_mask = (df_txt.values != df_sql.values).any(axis=1)
             bad_idx = list(pd.Index(range(len(df_txt)))[neq_mask])
     
@@ -81,6 +80,7 @@ for task in tasks_to_run:
                 print("✅ Таблицы совпадают по значениям (различия только технические — порядок колонок, типы и т.п.).")
                 
             else:
+                print("Таблицы различаются (учитывая порядок).")
                 print(f"Первых 10 несовпадений (из {len(bad_idx)}):")
                 for i in bad_idx[:10]:
                     start = max(0, i-2); end = min(len(df_txt), i+3)
